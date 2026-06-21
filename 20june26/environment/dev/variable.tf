@@ -3,3 +3,10 @@ variable "prefix" {}
 variable "Vnet" {}
 variable "subnet" {}
 variable "nsg" {}
+variable "subnetnsgasso" {}
+variable "nic" {}
+variable "vmlinux" {}
+variable "vmwin" {}
+variable "bhost_name" {}
+variable "pip" {}
+variable "vnet_peering" {}
