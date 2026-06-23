@@ -1,0 +1,35 @@
+name: "terraform cicd"
+
+on:
+  push:
+    branches :
+      main:
+permissions :
+  id-token: write
+  contents: read  
+
+jobs:
+  terraform:
+    runs-on: ubunts-latest
+
+    setps :
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+
+      - name: Azure login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrents.AZURE_CLIENT_ID}}
+          tenant-id: ${{secrents.AZURE_TENANT_ID}}
+          subscription-id: ${{ secrents.AZURE_SUBSCRIPTION_ID}}   
+
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+
+      - name: terraform info deloy     
+        run: |
+           terraform init
+           terraform validate
+           terraform plan
+           terraform apply --auto-approve
+        working_directory: ./20june26/environment/dev   
