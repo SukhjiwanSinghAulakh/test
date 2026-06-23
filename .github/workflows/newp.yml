@@ -11,7 +11,9 @@ permissions :
 jobs:
   terraform:
     runs-on: ubunts-latest
-
+    defaults:
+      run:
+        working-directory: ./20june26/environment/dev
     setps :
       - name: Checkout
         uses: actions/checkout@v7.0.0
@@ -31,5 +33,4 @@ jobs:
            terraform init
            terraform validate
            terraform plan
-           terraform apply --auto-approve
-        working_directory: ./20june26/environment/dev   
+           terraform apply --auto-approve  
