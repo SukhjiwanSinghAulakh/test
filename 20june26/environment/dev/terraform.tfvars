@@ -10,7 +10,7 @@ resource_group = {
     }
     rg={
         name="spoke"
-        location="japanwest"
+        location="japanwest"  ###
     }
  }
 Vnet = {
