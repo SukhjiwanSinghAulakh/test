@@ -1,19 +1,24 @@
-name: cicd porcess
+name: CICD
 
 on:
   push:
     branches:
-      - main
+    - main:
+
+permission:
+  id-token: write
+  contents: read
 
 jobs:
-   Scuritycheck:
-    runs-on: ubuntu-latest
 
-    defaults:
+  security::
+    run-on: ubuntu-latest
+
+    default:
       run:
         working-directory: ./20june26/environment/dev
-    
-    steps: 
+
+    steps:
       - name: Checkout
         uses: actions/checkout@v4 
   
@@ -23,8 +28,6 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    
-       
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
@@ -33,69 +36,64 @@ jobs:
 
       - name: tfsec action
         uses: aquasecurity/tfsec-action@v1.0.3
-   
-   validate:      
-      needs: Scuritycheck
-      runs-on: ubuntu-latest   
       
-      defaults:
-        run:
-          working-directory: ./20june26/environment/dev
     
-      steps:
+  validate:
+    need: security
+    run-on: ubuntu-latest
+    default:
+      run:
+        working-directory: ./20june26/environment/dev
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 
+  
+      - name: Azure login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
-        - uses: actions/checkout@v4
+        uses: action/checkout@v.7.0
+        run: terraform fmt
+        run: terraform validate
 
-        - uses: hashicorp/setup-terraform@v4
-         
-       
-        - name: Terraform fmt
-          run: terraform fmt -check
-          continue-on-error: true
-
-        - name: Terraform Init
-          run: terraform init -input=false
-
-        - name: Terraform Validate
-          run: terraform validate -no-color
-
-   plan:
-      needs: validate
-      runs-on: ubuntu-latest
-
-      defaults:
-        run:
-          working-directory: ./20june26/environment/dev
+  plan:
+    need: validate
+    run-on: ubuntu-latest
+    default:
+      run:
+        working-directory: ./20june26/environment/dev
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4 
+  
+    - name: Azure login
+      uses: azure/login@v3
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    run: terraform init
+    run: terraform plan
       
-      steps:
-      
-        - uses: actions/checkout@v4
-        - uses: hashicorp/setup-terraform@v4   
-
-        - name: Terraform Init
-          run: terraform init -input=false 
-      
-        - name: Terraform Plan
-          run: terraform plan -no-color -input=false
-
-   apply:
-      needs: plan
-      runs-on: ubuntu-latest
-
-      defaults:
-        run:
-          working-directory: ./20june26/environment/dev
-      
-      steps:
-      
-        - uses: actions/checkout@v4
-        - uses: hashicorp/setup-terraform@v4    
-
-        - name: Terraform Init
-          run: terraform init -input=false 
-      
-        - name: Terraform Plan
-          run: terraform plan -no-color -input=false    
-
-        - name: Terraform apply 
-          run: terraform apply -auto-approve
+  apply:
+    need: plan
+    run-on: ubuntu-latest
+    default:
+      run:
+        working-directory: ./20june26/environment/dev
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4 
+  
+    - name: Azure login
+      uses: azure/login@v3
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    run: terraform init
+    run: terraform apply -auto-approve
