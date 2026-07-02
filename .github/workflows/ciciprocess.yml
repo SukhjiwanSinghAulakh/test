@@ -15,7 +15,7 @@ jobs:
     
     steps: 
       - name: Checkout
-        uses: actions/checkout@v7.0.0   
+        uses: actions/checkout@v4 
   
       - name: Azure login
         uses: azure/login@v3
@@ -29,7 +29,7 @@ jobs:
         uses: chnsz/tflint-action@master
 
       - name: tfsec action
-      - uses: aquasecurity/tfsec-action@v1.0.3
+        uses: aquasecurity/tfsec-action@v1.0.3
    
    validate:      
       needs: Scuritycheck
@@ -61,29 +61,38 @@ jobs:
       runs-on: ubuntu-latest
 
       defaults:
-      run:
-        working-directory: ./20june26/environment/dev
+        run:
+          working-directory: ./20june26/environment/dev
       
       steps:
       
         - uses: actions/checkout@v4
-        - uses: hashicorp/setup-terraform@v4    
+        - uses: hashicorp/setup-terraform@v4   
+
+        - name: Terraform Init
+          run: terraform init -input=false 
       
         - name: Terraform Plan
           run: terraform plan -no-color -input=false
 
-      apply:
-          needs: plan
-          runs-on: ubuntu-latest
+   apply:
+      needs: plan
+      runs-on: ubuntu-latest
 
       defaults:
-      run:
-        working-directory: ./20june26/environment/dev
+        run:
+          working-directory: ./20june26/environment/dev
       
       steps:
       
         - uses: actions/checkout@v4
         - uses: hashicorp/setup-terraform@v4    
-             
+
+        - name: Terraform Init
+          run: terraform init -input=false 
+      
+        - name: Terraform Plan
+          run: terraform plan -no-color -input=false    
+          
         - name: Terraform apply 
           run: terraform apply -auto-approve
