@@ -25,8 +25,11 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
        
-      - name: tflint-action
-        uses: chnsz/tflint-action@master
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Run TFLint
+        run: tflint  
 
       - name: tfsec action
         uses: aquasecurity/tfsec-action@v1.0.3
@@ -93,6 +96,6 @@ jobs:
       
         - name: Terraform Plan
           run: terraform plan -no-color -input=false    
-          
+
         - name: Terraform apply 
           run: terraform apply -auto-approve
