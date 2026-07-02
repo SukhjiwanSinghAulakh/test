@@ -3,18 +3,18 @@ name: CICD
 on:
   push:
     branches:
-    - main:
+    - main
 
-permission:
+permissions:
   id-token: write
   contents: read
 
 jobs:
 
-  security::
-    run-on: ubuntu-latest
+  security:
+    runs-on: ubuntu-latest
 
-    default:
+    defaults:
       run:
         working-directory: ./20june26/environment/dev
 
@@ -28,6 +28,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init    
+
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
@@ -39,9 +45,9 @@ jobs:
       
     
   validate:
-    need: security
-    run-on: ubuntu-latest
-    default:
+    needs: security
+    runs-on: ubuntu-latest
+    defaults:
       run:
         working-directory: ./20june26/environment/dev
     
@@ -55,15 +61,22 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        
-        uses: action/checkout@v.7.0
-        run: terraform fmt
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
         run: terraform validate
 
   plan:
-    need: validate
-    run-on: ubuntu-latest
-    default:
+    needs: validate
+    runs-on: ubuntu-latest
+    defaults:
       run:
         working-directory: ./20june26/environment/dev
     steps:
@@ -76,13 +89,17 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    run: terraform init
-    run: terraform plan
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3    
+    - name: terraform init    
+      run: terraform init
+    - name: terraform plan  
+      run: terraform plan
       
   apply:
-    need: plan
-    run-on: ubuntu-latest
-    default:
+    needs: plan
+    runs-on: ubuntu-latest
+    defaults:
       run:
         working-directory: ./20june26/environment/dev
     steps:
@@ -95,5 +112,9 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    run: terraform init
-    run: terraform apply -auto-approve
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3     
+    - name: terraform init    
+      run: terraform init
+    - name: terraform apply  
+      run: terraform apply -auto-approve
