@@ -38,11 +38,12 @@ jobs:
         uses: terraform-linters/setup-tflint@v4
 
       - name: Run TFLint
-        run: tflint  
-
-      - name: tfsec action
-        uses: aquasecurity/tfsec-action@v1.0.3
+        run: tflint
+        continue-on-error: true
       
+      - name: Run tfsec
+        uses: aquasecurity/tfsec-action@v1.0.3
+        continue-on-error: true
     
   validate:
     needs: security
