@@ -19,7 +19,7 @@ subnet = {
 
   }
   subnet4 = {
-    name                  = "GatewaySubnet"
+    name                  = "APPGatewaySubnet"
     resource_group_name   = "jp_devops_rg_hub"
     virtual_network_group = "jp_devops_vnet_hub"
     address_prefixes      = ["10.0.4.0/24"]
@@ -54,7 +54,7 @@ subnet = {
   subnet8 = {
     name                  = "NSGSubnet"
     resource_group_name   = "jp_devops_rg_spoke"
-    virtual_network_group = "jp_devops_vnet_hub"
+    virtual_network_group = "jp_devops_vnet_spoke"
     address_prefixes      = ["10.1.4.0/24"]
 
   }
