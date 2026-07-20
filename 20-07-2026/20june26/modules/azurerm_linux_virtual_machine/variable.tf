@@ -1,0 +1,4 @@
+variable "vmlinux" {}
+variable "prefix" {
+  
+}

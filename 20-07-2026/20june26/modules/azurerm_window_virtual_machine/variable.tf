@@ -1,0 +1,2 @@
+variable "vmwin" {}
+variable "prefix" {}
