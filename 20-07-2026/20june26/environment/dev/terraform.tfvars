@@ -221,7 +221,7 @@ subnetnsgasso = {
     ##network_security_group_id = "/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japanwest/providers/Microsoft.Network/networkSecurityGroups/dev-nsg-spoke-japanwest"
   }
   subass5 = {
-    subnet_name              = "dev-backtend-subnet"
+    subnet_name              = "dev-backend-subnet"
     vnet_name                = "dev-vnet-spoke-japanwest"
     vnet_resource_group_name = "dev-spoke-japanwest"
     nsg_name                 = "dev-nsg-spoke-japanwest"
@@ -266,8 +266,8 @@ nic = {
     ip_configuration = {
       name                     = "ipconfiguration2"
       subnet_name              = "dev-frontend-subnet"
-      vnet_name                = "dev-vnet-spoke-japaneast"
-      vnet_resource_group_name = "dev-spoke-japaneast"
+      vnet_name                = "dev-vnet-spoke-japanwest"
+      vnet_resource_group_name = "dev-spoke-japanwest"
       ##subnet_id                     =  "/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japanwest/providers/Microsoft.Network/virtualNetworks/dev-vnet-spoke-japanwest/subnets/dev-frontend-subnet"
       private_ip_address_allocation = "Dynamic"
     }
