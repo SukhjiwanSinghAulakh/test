@@ -8,9 +8,8 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
   admin_password                  = each.value.admin_password
   disable_password_authentication = each.value.disable_password_authentication
 
-  network_interface_ids = each.value.network_interface_ids
-
-  os_disk {
+  network_interface_ids = [data.azurerm_network_interface.vmlinux[each.key].id]
+    os_disk {
     caching              = each.value.os_disk.caching
     storage_account_type = each.value.os_disk.storage_account_type
   }

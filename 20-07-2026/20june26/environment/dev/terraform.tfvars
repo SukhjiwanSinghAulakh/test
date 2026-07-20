@@ -297,7 +297,8 @@ vmlinux = {
     admin_password                  = "P@$$w0rd1234!"
     disable_password_authentication = false
 
-    network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japaneast/providers/Microsoft.Network/networkInterfaces/dev-nic1-japaneast"]
+
+    # network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japaneast/providers/Microsoft.Network/networkInterfaces/dev-nic1-japaneast"]
 
     os_disk = {
       caching              = "ReadWrite"
@@ -320,7 +321,7 @@ vmlinux = {
     admin_password                  = "P@$$w0rd1234!"
     disable_password_authentication = false
 
-    network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japaneast/providers/Microsoft.Network/networkInterfaces/dev-nic3-japaneast"]
+    #network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japaneast/providers/Microsoft.Network/networkInterfaces/dev-nic3-japaneast"]
 
     os_disk = {
       caching              = "ReadWrite"
@@ -337,13 +338,13 @@ vmlinux = {
 }
 vmwin = {
   vmwin1 = {
-    name                  = "window-machine"
-    resource_group_name   = "dev-spoke-japanwest"
-    location              = "japanwest"
-    size                  = "Standard_D2s_v3"
-    admin_username        = "adminuser"
-    admin_password        = "P@$$w0rd1234!"
-    network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japanwest/providers/Microsoft.Network/networkInterfaces/dev-nic2-japanwest"]
+    name                = "window-machine"
+    resource_group_name = "dev-spoke-japanwest"
+    location            = "japanwest"
+    size                = "Standard_D2s_v3"
+    admin_username      = "adminuser"
+    admin_password      = "P@$$w0rd1234!"
+    #network_interface_ids = ["/subscriptions/5763111c-28fc-4a01-97e4-3b5805a10876/resourceGroups/dev-spoke-japanwest/providers/Microsoft.Network/networkInterfaces/dev-nic2-japanwest"]
     os_disk = {
       caching              = "ReadWrite"
       storage_account_type = "Standard_LRS"
